@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>Live Update</title>
+<meta charset="UTF-8">
+<script type="text/javascript" src="autoUpdate.js"></script>
+</head>
+<style>
+.btn {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+</style>
+<body>
+<p id="demo" style="display:none;"></p>
+
+<div align="center">
+<br>
+<br>
+
+<button class="btn" name="x" role="button" onclick="stt()">start</button><br>
+<p><span id="action"></span></p>
+<div id="output" class="hide"></div>
+</div>
+<script>
+function stt(){
+// get output div reference
+var output= document.getElementById("output");
+// get action element reference
+var action = document.getElementById("action");
+// new speech recognition object
+var speechRecognition = speechRecognition || webkitSpeechRecognition;
+var recognition = new speechRecognition();
+//this runs when the speech recognition service starts
+recognition.onstart = function(){
+action.innerHTML = "<small>listening, please speak...</small>";
+};
+recognition.onspeechend = function() {
+action.innerHTML = "<small>stopped listening</small>";
+recognition.stop();
+}
+
+// this runs when the speech recognition service returns result
+recognition.onresult = function(event) {
+var transcript = event.result[0][0].transcript;
+output.innerHTML = transcript ;
+output.classList.remove("hide");
+};
+//start recognition
+recognition.start();
+}
+</script>
+
+</body>
+</html>
